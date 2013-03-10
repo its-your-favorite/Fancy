@@ -1,12 +1,10 @@
 //throw "";
 /**
- * benefits:
- * - Like underscore .chain method, but returns a more usable one-off.
- * - integrates oliver steele's functional
- * - assumes identity for filter
- * - The combination of the two libraries. So suppose I want to take an object, and return a sorted representation of its values.
- *  sure, .pairs helps, but there is no effective way to plug in pluck and sortBy, thus requiring a .pairs.sort(function (a,b) { return (a[1] < b[1])*2-1; }) //remember we can sort alphabetical things
- *  By connecting the two libraries we can get the grace we sought: .pairs.sortBy("x[1]")
+ * todo - wrap code, apply strict mode.
+ * todo - improve tutorial (add: also improved the way mapping on objects works, and filtering)
+ * todo - add that function I mentioned on my blog I tihnk
+ * todo - make those other underscore functions work
+ * todo - make sure functional isn't crapping up the function prototype
  *
  * -- Will move hasAll to my library
  * -- Will arr.collapseToObj(reducer)
@@ -62,18 +60,34 @@ AlexLibrary.rejectObj = function(obj, callback) {
     return obj.pairs().reject(function(a) { return callback(a[1]); }).object();
 };
 
+AlexLibrary.mapObj = function(obj, callback) {
+    return  obj.pairs().map(function(pair) { return [pair[0], callback(pair[1])];}).object();
+};
+
 AlexLibrary.toTrueArray = function(arrayEsque) {
     return Array.prototype.constructor.apply(new Array, arrayEsque);
 };
 
+/**
+ * Compares two arrays, but doesn't care about order, types, or nested-ness
+ * @param arrMe
+ * @param arrayEsque
+ * @return {Boolean}
+ */
 AlexLibrary.sameContents = function(arrMe, arrayEsque) {
-    return (arrMe.countBy().meld(FancyArray(arrayEsque).countBy(), "-").filter().length == 0); //beautiful
+    return (arrMe.countBy().meld(FancyArray(arrayEsque).countBy(), "+-").filter().length == 0); //beautiful
 };
 
-AlexLibrary.concat = function(me, i) {
-    var tmp = new FA(me); tmp.push.apply(tmp, i);
+AlexLibrary.concat = function(me) { //since native seems to break w/o compatibility mode
+    var tmp = new FA(me);
+    for (var x=1; x < arguments.length; x++)
+        tmp.push.apply(tmp, arguments[x]);
     return tmp;
-}; //since native seems to break
+};
+
+AlexLibrary.union = function (me) { //this only exists to compensate for the broken concat
+    return FancyArray.prototype.concat.apply(FancyArray.prototype, arguments).uniq();
+}
 
 /**
  * combines two objects using a reducer for duplicates
@@ -154,11 +168,12 @@ var polyfillObj = [{"name":"keys"},{"name":"values"},{"name":"pairs"},{"name":"i
     {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
     {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
-var alexLibObj = [{"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
+var alexLibObj = [{"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
 var alexLibArr = [ {name: "toTrueArray"}, {name: "sameContents"}];
 
 if (!compatibility_mode)
-    alexLibArr.push({name: "concat"}); //without compatibility mode, the native version doesn't work
+    alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work
+// @todo I suspect this may be necessary for difference, pick, and omit tooo.
 
 var x, polyfill = polyfillColl.concat(polyfillArr);
 

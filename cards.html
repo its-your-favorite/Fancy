@@ -47,7 +47,8 @@ var hand = // ["5S", "6S", "5H", "6H", "5D"];
     ['10s', 'JC', 'Qs', 'Ks', 'As'], //straight high ace
      ['9s','8h','10d','AC', '2C'], //high card - zA982
      ['9s','9h','2c','3C', '9d'], //trips h4932
-     ['As', '2h', 'Jd', 'AC', '2D'] //two pair H3z2B
+     ['As', '2h', 'Jd', 'AC', '2D'], //two pair H3z2B
+     ['Js', 'Qs', 'Jd', 'Jh', 'Jc'] // four of a kind H8-jq
  ]);
 
 
@@ -59,13 +60,8 @@ var hand = // ["5S", "6S", "5H", "6H", "5D"];
   * @return {*|All}
   */
 FancyArray.prototype.hasAll = function(needle) {
-    var haystack = this;
-    var needed = new FancyArray(haystack).countBy();
-
-    _.map(needle, function(k,v) {
-       needed[k] = (needed[k] || 0) -1;
-    });
-    return needed.values().every(">=0");
+    var summed = this.countBy().meld(FA(needle).countBy().mapObj("a*-1"), "a+b");
+    return summed.values().every(">=0");
 };
 
 /**
@@ -147,29 +143,26 @@ var evaluateHand = function(cardSet) {
 
         return way1 || way2; //both cannot happen at the same time
     })(cardSet);
+    var isStraightFlush = isFlush && isStraight; //order matters here
 
     var cardRanks = _.map(cardSet, cardValuesAlpha).sort().reverse().join("");
-    var isStraightFlush = isFlush && isStraight;
-    var highCard = _.map(cardSet, cardValuesAlpha).sort().slice(-1);
+
     var possibleHands = FA(
-            [   ["Straight Flush", isStraightFlush], // SF
-                ["Four of a Kind", f([4,1], cardValuesAlpha)], // quads
-                ["Full House", f([3,2], cardValuesAlpha)], //fullHouse
-                ["Flush", isFlush && cardRanks], // flush
-                ["Straight", isStraight], //var straight
-                ["Three of a Kind", f([3,1,1], cardValuesAlpha)], //trips
-                ["Two Pair", f([2,2,1], cardValuesAlpha)], //two pair
-                ["One Pair", f([2,1,1,1], cardValuesAlpha)], //pair
-                ["High Card", f([1,1,1,1,1], cardValuesAlpha)]]); //high card
+            [   ["Straight Flush",      isStraightFlush], // SF
+                ["Four of a Kind",      f([4,1], cardValuesAlpha)], // quads
+                ["Full House",          f([3,2], cardValuesAlpha)], //fullHouse
+                ["Flush",               isFlush && cardRanks], // flush
+                ["Straight",            isStraight], // straight
+                ["Three of a Kind",     f([3,1,1], cardValuesAlpha)], //trips
+                ["Two Pair",            f([2,2,1], cardValuesAlpha)], //two pair
+                ["One Pair",            f([2,1,1,1], cardValuesAlpha)], //pair
+                ["High Card",           f([1,1,1,1,1], cardValuesAlpha)]]); //high card
 
     var allMatchedHands = possibleHands.map( function(hand, i) {
-        if (! hand[1]) { //no match
-            return false;
-        }
-        return [hand[0], "H" + (9-i) + hand[1]];
-    });
-    var bestHand = allMatchedHands.filter()[0];
+        return hand[1] && [hand[0], "Hand" + (9-i) + "-" + hand[1]];
+    }).filter();
 
+    var bestHand = allMatchedHands[0];
     return bestHand;
 };
 
@@ -179,13 +172,13 @@ var evaluateHand = function(cardSet) {
  * @param inp
  */
 var followsPattern = function(hand, expected, callback) {
-    var values = _.map(hand, callback);
-    var groups = FA(values).countBy();
+    var values = FA(hand).map(callback);
+    var groups = values.countBy();
     if (! groups.values().hasAll(expected)) {
         return false; //This hand is NOT of the expected type, no match
     }
     var sets = groups.pairs();
-    sets = sets.sort(function(a, b ) { //sort by property 1, then property 0 in case of tie
+    sets = sets.sort(function(a, b ) { //sort by property 1 (count), then property 0 (face value) in case of tie
             return (a[1] < b[1]) || ((a[1] == b[1]) && (a[0] < b[0]));
     });
     return sets.pluck(0).join("");
