@@ -1,0 +1,200 @@
+<script src="functional.js"></script>
+<script src="underscore-min.js"></script>
+<script src="fancy.js"></script>
+<script>
+ /**
+  * Poker hands
+  *
+  * What ifs:
+  * - We wanted to go texas hold'em (best of 7 cards) ~ 10 lines
+  * - Cards were now represented with classes? ~ 5 lines
+  * - Hands were now represented as classes? ~ 5 lines
+  * - We had jokers? ~ 40% increase
+  *
+  */
+
+         /*
+         Tutorializing this:
+         -Abstraction via functions aids abstraction via classes.
+         -Functional aids putting data in the most succint and dry form
+         -Reusability
+         -self documentation
+         -simplifying logic
+         -Look at how much of the code uses _
+
+        process:
+         -Touch on the complexity on poker hand comparison technique. Or link.
+         -Logic in English
+         -A bit about building a minimal form that will minimize wasted code.
+         -Continue to build code into english-like code with small functions
+         -micro-optimizations
+         -Read points above
+
+          */
+
+var hand = // ["5S", "6S", "5H", "6H", "5D"];
+        ['10s', 'Js', 'Qs', 'Ks', '2s']; //flush
+        // ['10s', 'Js', 'Qs', 'Ks', 'As']; //straight flush
+        //['9s','8h','10d','AC', '2C'];
+
+
+ var sampleCases = FA([
+     ["5S", "6S", "5H", "6H", "5D"], //full house H756
+    ['10s', 'Js', 'Qs', 'Ks', '2s'], //flush cbaA2
+    ['10s', 'Js', 'Qs', 'Ks', 'As'], //straight flush
+    ["9S", "9H", "4H", "4D", "4C"], //full house 49
+    ['2s', '3C', '5s', '4s', 'As'], //straight low ace
+    ['10s', 'JC', 'Qs', 'Ks', 'As'], //straight high ace
+     ['9s','8h','10d','AC', '2C'], //high card - zA982
+     ['9s','9h','2c','3C', '9d'], //trips h4932
+     ['As', '2h', 'Jd', 'AC', '2D'] //two pair H3z2B
+ ]);
+
+
+ /**
+  * Generic Helper function. Returns whether Haystack has all the elements in needle, and at least as many times as in needle.
+  *
+  * @param haystack array
+  * @param needle array
+  * @return {*|All}
+  */
+FancyArray.prototype.hasAll = function(needle) {
+    var haystack = this;
+    var needed = new FancyArray(haystack).countBy();
+
+    _.map(needle, function(k,v) {
+       needed[k] = (needed[k] || 0) -1;
+    });
+    return needed.values().every(">=0");
+};
+
+/**
+ * Takes the card object and returns a string representing its value
+ * @param card
+ * @return {*}
+ */
+var cardValues = function(card) {
+    if (card.length == 2)
+        return card[0];
+    return card.substr(0,2);
+};
+
+/**
+ * Takes the card object and returns a string representing its suit
+ * @param card
+ * @return {*}
+ */
+var cardSuits = function(card) {
+    card = card.toLowerCase();
+    if (card.length == 2)
+        return card[1];
+    return card[2];
+};
+
+ /**
+  * Returns a card value in a way that each card's worth is in ascii order
+  * @param card
+  * @return {*}
+  */
+var cardValuesAlpha = function(card) {
+    card = cardValues(card);
+    var lookup = {'10': 'T', "J": 'j', "Q": 'q', "K": 'y', "A": 'z'};
+    if (lookup.hasOwnProperty(card))
+        return lookup[card];
+    return parseInt(card);
+};
+
+ /**
+  * Returns card value in such a way that a number is ascribed to each card value
+  * @param aceHigh
+  * @param card
+  * @return {*}
+  */
+var cardValuesNumeric = function(aceHigh, card) {
+  card = cardValues(card);
+  if (parseInt(card)) {
+      return parseInt(card);
+  }
+  var lookup = {"A": 1 + 13*(!!aceHigh), "J": 11, "Q": 12, "K": 13};
+  return lookup[card];
+};
+
+/**
+ *  General helper function. returns whether a set of numbers are consecutive
+ */
+var areConsecutive = function(numbers) {
+    var minimum = Math.min.apply(Math, numbers);
+    var subtractMinimum = function(num) { return num - minimum;};
+    if (FA.range(0,5).difference(_.map(numbers, subtractMinimum)).length)
+        return false;
+    return minimum;
+};
+
+/**
+ * Determines quality of a poker hand as a string that can be rated by alphabetical sorting order < >
+ * @param cardSet
+ * @return {String}
+ */
+var evaluateHand = function(cardSet) {
+    var f = _.partial(followsPattern, cardSet);
+
+    var isFlush = f([5], cardSuits);
+    var isStraight = (function(cards) {
+        //Ace as a 1 straight
+        var way1 = cardValuesAlpha(areConsecutive(_.map(cards, _.partial(cardValuesNumeric, false))) + 'c');
+        //Ace as a 14 straight
+        var way2 = cardValuesAlpha(areConsecutive(_.map(cards, _.partial(cardValuesNumeric, true))) + 'c');
+
+        return way1 || way2; //both cannot happen at the same time
+    })(cardSet);
+
+    var cardRanks = _.map(cardSet, cardValuesAlpha).sort().reverse().join("");
+    var isStraightFlush = isFlush && isStraight;
+    var highCard = _.map(cardSet, cardValuesAlpha).sort().slice(-1);
+    var possibleHands = FA(
+            [   ["Straight Flush", isStraightFlush], // SF
+                ["Four of a Kind", f([4,1], cardValuesAlpha)], // quads
+                ["Full House", f([3,2], cardValuesAlpha)], //fullHouse
+                ["Flush", isFlush && cardRanks], // flush
+                ["Straight", isStraight], //var straight
+                ["Three of a Kind", f([3,1,1], cardValuesAlpha)], //trips
+                ["Two Pair", f([2,2,1], cardValuesAlpha)], //two pair
+                ["One Pair", f([2,1,1,1], cardValuesAlpha)], //pair
+                ["High Card", f([1,1,1,1,1], cardValuesAlpha)]]); //high card
+
+    var allMatchedHands = possibleHands.map( function(hand, i) {
+        if (! hand[1]) { //no match
+            return false;
+        }
+        return [hand[0], "H" + (9-i) + hand[1]];
+    });
+    var bestHand = allMatchedHands.filter()[0];
+
+    return bestHand;
+};
+
+
+/**
+ * Returns whether a hand follows a certain pattern of repetition
+ * @param inp
+ */
+var followsPattern = function(hand, expected, callback) {
+    var values = _.map(hand, callback);
+    var groups = FA(values).countBy();
+    if (! groups.values().hasAll(expected)) {
+        return false; //This hand is NOT of the expected type, no match
+    }
+    var sets = groups.pairs();
+    sets = sets.sort(function(a, b ) { //sort by property 1, then property 0 in case of tie
+            return (a[1] < b[1]) || ((a[1] == b[1]) && (a[0] < b[0]));
+    });
+    return sets.pluck(0).join("");
+};
+
+ var comparedCases = sampleCases.map(evaluateHand).sortBy("x[1]").reverse();
+
+console.log(comparedCases);
+
+</script>
+
+
