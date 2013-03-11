@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cards.html" afterPath="$PROJECT_DIR$/cards.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy.js" afterPath="$PROJECT_DIR$/fancy.js" />
     </list>
     <ignored path="Fancy.iws" />
@@ -23,19 +22,30 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="fancy.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="fancy.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fancy.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="170" column="167" selection-start="6791" selection-end="6795" vertical-scroll-proportion="11.44">
+            <state line="6" column="2" selection-start="331" selection-end="331" vertical-scroll-proportion="0.16164818">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cards.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="underscore-min.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/underscore-min.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="780" column="31" selection-start="29563" selection-end="29575" vertical-scroll-proportion="-8.56">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cards.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cards.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="180" column="21" selection-start="5907" selection-end="5907" vertical-scroll-proportion="5.5178237">
+            <state line="56" column="3" selection-start="1810" selection-end="2196" vertical-scroll-proportion="-5.230769">
               <folding>
                 <element signature="e#4063#4416#0" expanded="false" />
               </folding>
@@ -56,17 +66,16 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/fancy.js" />
         <option value="$PROJECT_DIR$/cards.html" />
+        <option value="$PROJECT_DIR$/fancy.js" />
       </list>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-13" />
-    <option name="y" value="129" />
-    <option name="width" value="1932" />
-    <option name="height" value="745" />
+    <option name="y" value="155" />
+    <option name="width" value="1920" />
+    <option name="height" value="855" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -139,14 +148,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-13" y="129" width="1932" height="745" extended-state="0" />
+    <frame x="0" y="155" width="1920" height="855" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24973261" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25134555" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -214,19 +223,28 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fancy.js">
+    <entry file="file://$PROJECT_DIR$/underscore-min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="170" column="167" selection-start="6791" selection-end="6795" vertical-scroll-proportion="11.44">
-          <folding />
+        <state line="780" column="31" selection-start="29563" selection-end="29575" vertical-scroll-proportion="-8.56">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cards.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="180" column="21" selection-start="5907" selection-end="5907" vertical-scroll-proportion="5.5178237">
+        <state line="56" column="3" selection-start="1810" selection-end="2196" vertical-scroll-proportion="-5.230769">
           <folding>
             <element signature="e#4063#4416#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="2" selection-start="331" selection-end="331" vertical-scroll-proportion="0.16164818">
+          <folding />
         </state>
       </provider>
     </entry>
