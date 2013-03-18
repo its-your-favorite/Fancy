@@ -47,13 +47,12 @@ So please checkout underscore documentation and http://osteele.com/sources/javas
   * Also, a few functions are added like filterObj
  * Was that a dragon ball z reference?
   * Yes 
- * Wait, what functions did you add?
-  * Functions
+ * Wait, what functions did you add fancyArray, besides what is in underscore?
    * toTrueArray
    * hasAll
    * sameContents
    * chunk
-  * Objects
+ * Okay, what functions did you add to fancyObject, besides what is in underscore?
    * meld
    * mapObj
    * filterObj
