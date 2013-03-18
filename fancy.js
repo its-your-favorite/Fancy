@@ -1,13 +1,21 @@
-//throw "";
+
 /**
  * todo - improve tutorial (add: also improved the way mapping on objects works, and filtering)
  *  for example, chunk(2) could be defined as FA([2,4,1,3,7,7]).groupBy('v,i->0|i/2')
- * todo - add that function I mentioned on my blog I think
- * todo - make sure functional isn't crapping up the function prototype
+ *  document meld
  *
- * todo make meld take multiple objects or an array
- * todo add chunk and add to documentation
- * -- Will arr.collapseToObj(reducer)
+ * Reiterate the 3 ways to declare a function in osteele
+ * - just an operator
+ * - operator & param
+ * - variable notation
+ * - arrow notation
+ *
+ * Clarify that I knee-capped osteele's library
+ *
+ * //my added functions:
+// Obj: mapObj, filterObj, selectObj, rejectObj, meld
+// Array: sameContents, hasAll, chunk
+ *
  *
  * @param input
  * @return {*}
@@ -105,13 +113,19 @@ var FA, FO;
      * @param targetObj
      * @param reducer
      */
-    AlexLibrary.meld = function(me, targetObj, reducer) {
+    AlexLibrary.meld = function(me, targetObjs, reducer) {
         var result = new FancyObject({});
-        me.keys().union(FO(targetObj).keys()).map(function(keyName){
-            if (me.hasOwnProperty(keyName) && targetObj.hasOwnProperty(keyName))
-                result[keyName] = reducer(me[keyName], targetObj[keyName]);
-            else
-                result[keyName] = me[keyName] || targetObj[keyName];
+
+        if (!(targetObjs instanceof Array))
+            targetObjs = [targetObjs];
+
+        FA(targetObjs).map(function(targetObj) {
+            me.keys().union(FO(targetObj).keys()).map(function(keyName){
+                if (me.hasOwnProperty(keyName) && targetObj.hasOwnProperty(keyName))
+                    result[keyName] = reducer(me[keyName], targetObj[keyName]);
+                else if (! result.hasOwnProperty(keyName))
+                    result[keyName] = me[keyName] || targetObj[keyName];
+            });
         });
         return result;
     };

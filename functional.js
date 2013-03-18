@@ -1,4 +1,4 @@
-
+var emptyObj = {};
 typeof window=='undefined'&&(window={});var Functional=window.Functional||{};Functional.install=function(except){var source=Functional,target=window;for(var name in source)
 name=='install'||name.charAt(0)=='_'||except&&name in except||{}[name]||(target[name]=source[name]);}
 Functional.compose=function(){var fns=Functional.map(Function.toFunction,arguments),arglen=fns.length;return function(){for(var i=arglen;--i>=0;)
@@ -41,30 +41,30 @@ if(object[name]!=initialMethods[name])
 changedMethods[name]=object[name];return changedMethods;}};}
 Functional._attachMethodDelegates=function(methods){for(var name in methods)
 Functional[name]=Functional[name]||(function(name){var fn=methods[name];return function(object){return fn.apply(Function.toFunction(object),Array.slice(arguments,1));}})(name);}
-Functional.__initalFunctionState=Functional._startRecordingMethodChanges(Function.prototype);Function.prototype.bind=function(object){var fn=this;var args=Array.slice(arguments,1);return function(){return fn.apply(object,args.concat(Array.slice(arguments,0)));}}
-Function.prototype.saturate=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args);}}
-Function.prototype.aritize=function(n){var fn=this;return function(){return fn.apply(this,Array.slice(arguments,0,n));}}
-Function.prototype.curry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args.concat(Array.slice(arguments,0)));};}
-Function.prototype.rcurry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,Array.slice(arguments,0).concat(args));};}
-Function.prototype.ncurry=function(n){var fn=this;var largs=Array.slice(arguments,1);return function(){var args=largs.concat(Array.slice(arguments,0));if(args.length<n){args.unshift(n);return fn.ncurry.apply(fn,args);}
+Functional.__initalFunctionState=Functional._startRecordingMethodChanges(emptyObj);emptyObj.bind=function(object){var fn=this;var args=Array.slice(arguments,1);return function(){return fn.apply(object,args.concat(Array.slice(arguments,0)));}}
+emptyObj.saturate=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args);}}
+emptyObj.aritize=function(n){var fn=this;return function(){return fn.apply(this,Array.slice(arguments,0,n));}}
+emptyObj.curry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args.concat(Array.slice(arguments,0)));};}
+emptyObj.rcurry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,Array.slice(arguments,0).concat(args));};}
+emptyObj.ncurry=function(n){var fn=this;var largs=Array.slice(arguments,1);return function(){var args=largs.concat(Array.slice(arguments,0));if(args.length<n){args.unshift(n);return fn.ncurry.apply(fn,args);}
 return fn.apply(this,args);};}
-Function.prototype.rncurry=function(n){var fn=this;var rargs=Array.slice(arguments,1);return function(){var args=Array.slice(arguments,0).concat(rargs);if(args.length<n){args.unshift(n);return fn.rncurry.apply(fn,args);}
+emptyObj.rncurry=function(n){var fn=this;var rargs=Array.slice(arguments,1);return function(){var args=Array.slice(arguments,0).concat(rargs);if(args.length<n){args.unshift(n);return fn.rncurry.apply(fn,args);}
 return fn.apply(this,args);};}
-_=Function._={};Function.prototype.partial=function(){var fn=this;var _=Function._;var args=Array.slice(arguments,0);var subpos=[],value;for(var i=0;i<arguments.length;i++)
+_=Function._={};emptyObj.partial=function(){var fn=this;var _=Function._;var args=Array.slice(arguments,0);var subpos=[],value;for(var i=0;i<arguments.length;i++)
 arguments[i]==_&&subpos.push(i);return function(){var specialized=args.concat(Array.slice(arguments,subpos.length));for(var i=0;i<Math.min(subpos.length,arguments.length);i++)
 specialized[subpos[i]]=arguments[i];for(var i=0;i<specialized.length;i++)
 if(specialized[i]==_)
 return fn.partial.apply(fn,specialized);return fn.apply(this,specialized);}}
 Functional.I=function(x){return x};Functional.K=function(x){return function(){return x}};Functional.id=Functional.I;Functional.constfn=Functional.K;Function.S=function(f,g){f=Function.toFunction(f);g=Function.toFunction(g);return function(){return f.apply(this,[g.apply(this,arguments)].concat(Array.slice(arguments,0)));}}
-Function.prototype.flip=function(){var fn=this;return function(){var args=Array.slice(arguments,0);args=args.slice(1,2).concat(args.slice(0,1)).concat(args.slice(2));return fn.apply(this,args);}}
-Function.prototype.uncurry=function(){var fn=this;return function(){var f1=fn.apply(this,Array.slice(arguments,0,1));return f1.apply(this,Array.slice(arguments,1));}}
-Function.prototype.prefilterObject=function(filter){filter=Function.toFunction(filter);var fn=this;return function(){return fn.apply(filter(this),arguments);}}
-Function.prototype.prefilterAt=function(index,filter){filter=Function.toFunction(filter);var fn=this;return function(){var args=Array.slice(arguments,0);args[index]=filter.call(this,args[index]);return fn.apply(this,args);}}
-Function.prototype.prefilterSlice=function(filter,start,end){filter=Function.toFunction(filter);start=start||0;var fn=this;return function(){var args=Array.slice(arguments,0);var e=end<0?args.length+end:end||args.length;args.splice.apply(args,[start,(e||args.length)-start].concat(filter.apply(this,args.slice(start,e))));return fn.apply(this,args);}}
-Function.prototype.compose=function(fn){var self=this;fn=Function.toFunction(fn);return function(){return self.apply(this,[fn.apply(this,arguments)]);}}
-Function.prototype.sequence=function(fn){var self=this;fn=Function.toFunction(fn);return function(){return fn.apply(this,[self.apply(this,arguments)]);}}
-Function.prototype.guard=function(guard,otherwise){var fn=this;guard=Function.toFunction(guard||Functional.I);otherwise=Function.toFunction(otherwise||Functional.I);return function(){return(guard.apply(this,arguments)?fn:otherwise).apply(this,arguments);}}
-Function.prototype.traced=function(name){var self=this;name=name||self;return function(){window.console&&console.info('[',name,'apply(',this!=window&&this,',',arguments,')');var result=self.apply(this,arguments);window.console&&console.info(']',name,' -> ',result);return result;}}
+emptyObj.flip=function(){var fn=this;return function(){var args=Array.slice(arguments,0);args=args.slice(1,2).concat(args.slice(0,1)).concat(args.slice(2));return fn.apply(this,args);}}
+emptyObj.uncurry=function(){var fn=this;return function(){var f1=fn.apply(this,Array.slice(arguments,0,1));return f1.apply(this,Array.slice(arguments,1));}}
+emptyObj.prefilterObject=function(filter){filter=Function.toFunction(filter);var fn=this;return function(){return fn.apply(filter(this),arguments);}}
+emptyObj.prefilterAt=function(index,filter){filter=Function.toFunction(filter);var fn=this;return function(){var args=Array.slice(arguments,0);args[index]=filter.call(this,args[index]);return fn.apply(this,args);}}
+emptyObj.prefilterSlice=function(filter,start,end){filter=Function.toFunction(filter);start=start||0;var fn=this;return function(){var args=Array.slice(arguments,0);var e=end<0?args.length+end:end||args.length;args.splice.apply(args,[start,(e||args.length)-start].concat(filter.apply(this,args.slice(start,e))));return fn.apply(this,args);}}
+emptyObj.compose=function(fn){var self=this;fn=Function.toFunction(fn);return function(){return self.apply(this,[fn.apply(this,arguments)]);}}
+emptyObj.sequence=function(fn){var self=this;fn=Function.toFunction(fn);return function(){return fn.apply(this,[self.apply(this,arguments)]);}}
+emptyObj.guard=function(guard,otherwise){var fn=this;guard=Function.toFunction(guard||Functional.I);otherwise=Function.toFunction(otherwise||Functional.I);return function(){return(guard.apply(this,arguments)?fn:otherwise).apply(this,arguments);}}
+emptyObj.traced=function(name){var self=this;name=name||self;return function(){window.console&&console.info('[',name,'apply(',this!=window&&this,',',arguments,')');var result=self.apply(this,arguments);window.console&&console.info(']',name,' -> ',result);return result;}}
 Functional._attachMethodDelegates(Functional.__initalFunctionState.getChangedMethods());delete Functional.__initalFunctionState;Function.toFunction=Function.toFunction||Functional.K;if(!Array.slice){Array.slice=(function(slice){return function(object){return slice.apply(object,slice.call(arguments,1));};})(Array.prototype.slice);}
 String.prototype.lambda=function(){var params=[],expr=this,sections=expr.ECMAsplit(/\s*->\s*/m);if(sections.length>1){while(sections.length){expr=sections.pop();params=sections.pop().split(/\s*,\s*|\s+/m);sections.length&&sections.push('(function('+params+'){return ('+expr+')})');}}else if(expr.match(/\b_\b/)){params='_';}else{var leftSection=expr.match(/^\s*(?:[+*\/%&|\^\.=<>]|!=)/m),rightSection=expr.match(/[+\-*\/%&|\^\.=<>!]\s*$/m);if(leftSection||rightSection){if(leftSection){params.push('$1');expr='$1'+expr;}
 if(rightSection){params.push('$2');expr=expr+'$2';}}else{var vars=this.replace(/(?:\b[A-Z]|\.[a-zA-Z_$])[a-zA-Z_$\d]*|[a-zA-Z_$][a-zA-Z_$\d]*\s*:|this|arguments|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"/g,'').match(/([a-z_$][a-z_$\d]*)/gi)||[];for(var i=0,v;v=vars[i++];)
@@ -75,7 +75,7 @@ String.prototype.apply=function(thisArg,args){return this.toFunction().apply(thi
 String.prototype.call=function(){return this.toFunction().apply(arguments[0],Array.prototype.slice.call(arguments,1));}
 String.prototype.toFunction=function(){var body=this;if(body.match(/\breturn\b/))
 return new Function(this);return this.lambda();}
-Function.prototype.toFunction=function(){return this;}
+emptyObj.toFunction=function(){return this;}
 Function.toFunction=function(value){return value.toFunction();}
 String.prototype.ECMAsplit=('ab'.split(/a*/).length>1?String.prototype.split:function(separator,limit){if(typeof limit!='undefined')
 throw"ECMAsplit: limit is unimplemented";var result=this.split.apply(this,arguments),re=RegExp(separator),savedIndex=re.lastIndex,match=re.exec(this);if(match&&match.index==0)
