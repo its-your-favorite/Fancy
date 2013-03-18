@@ -20,6 +20,24 @@ See if two words are anagrams in linear time:
 Remove odd numbers from a list:
 - .reject("%2")
 
+### So how do I use it
+
+So simply create a fancy array from any array 
+- var sampleFancyArray = new FancyArray([1,2,3]);
+
+Now underscore functions that normally take an array as a parameter can be called on the object.
+- sampleFancyArray = sampleFancyArray.map(function(x) { return x + 1;});
+
+Also, you can create functions from strings as you would in Oliver Steele's Functional.js library:
+- sampleFancyArray = sampleFancyArray.map("+1"); //same as above
+
+Also, there are FancyObjects, which are the same thing, but used on javascript objects.
+- var sampleFancyObject = new FancyObject({a: 1, b:3, c: 2});
+- sampleFancyObject.keys(); // ['a', 'b', 'c']
+
+FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray()
+So please checkout underscore documentation and http://osteele.com/sources/javascript/functional/ .
+
 ###Don't ask me:
  * How's this different than using underscore and functional js?
   * more concisce
@@ -29,3 +47,16 @@ Remove odd numbers from a list:
   * Also, a few functions are added like filterObj
  * Was that a dragon ball z reference?
   * Yes 
+ * Wait, what functions did you add?
+  * Functions
+   * toTrueArray
+   * hasAll
+   * sameContents
+   * chunk
+  * Objects
+   * meld
+   * mapObj
+   * filterObj
+   * selectObj
+   * rejectObj
+   
