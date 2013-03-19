@@ -48,6 +48,9 @@ var FA, FO;
     };
     FancyObject.prototype = new Object;
 
+    FancyObject.object = function(keys, vals) {
+       return FO(_.object(keys,vals));
+    }
     /**
      * Shallow
      * @param obj
@@ -225,8 +228,8 @@ var FA, FO;
 
     var polyfillObj = [{"name":"keys"},{"name":"values"},{"name":"pairs"},{"name":"invert"},{"name":"functions"},
         {"name":"extend"},{"name":"pick"},{"name":"omit"},{"name":"defaults"},{"name":"clone"},{"name":"tap"},{"name":"has"},
-        {"name":"isEqual"},{"name":"isEmpty"},{"name":"isElement"},{"name":"isArray"},{"name":"isObject"},{"name":"isArguments"},
-        {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
+            {"name":"isEqual"},{"name":"isEmpty"},{"name":"isElement"},{"name":"isArray"},{"name":"isObject"},{"name":"isArguments"},
+            {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
         {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
     var alexLibObj = [{"name": "pickFancy"}, {"name": "omitFancy"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
