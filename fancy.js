@@ -1,10 +1,9 @@
 
 /**
  * todo - improve tutorial (add: also improved the way mapping on objects works, and filtering)
- *  for example, chunk(2) could be defined as FA([2,4,1,3,7,7]).groupBy('v,i->0|i/2')
- *  document meld
+ *  document meld & others
  *
- * Reiterate the 3 ways to declare a function in osteele
+ * Reiterate the 4 ways to declare a function in osteele
  * - just an operator
  * - operator & param
  * - variable notation
@@ -15,7 +14,7 @@
  * //my added functions:
 // Obj: mapObj, filterObj, selectObj, rejectObj, meld
 // Array: sameContents, hasAll, chunk
- *
+ * makeArray
  *
  * @param input
  * @return {*}
@@ -39,6 +38,8 @@ var FA, FO;
     if (typeof _ === "undefined") {
         throw "This Library Requires Underscore.js";
     }
+// todo oliver steele's library also defines underscore. I should use a different technique here...
+
 
     FancyObject = FO = function(input) {
         if (! (this instanceof FancyObject))
@@ -81,6 +82,10 @@ var FA, FO;
         return Array.prototype.constructor.apply(new Array, arrayEsque);
     };
 
+    AlexLibrary.difference = function(arrayEsque) {
+            var rest = FancyArray.prototype.concat.apply(FA(), Array.prototype.slice.call(arguments, 1));
+            return _.filter(arrayEsque, function(value){ return !_.contains(rest, value); });
+    }
     /**
      * Compares two arrays, but doesn't care about order, types, or nested-ness
      * @param arrMe
@@ -195,7 +200,7 @@ var FA, FO;
         {"name":"sortBy", iterator:1},{"name":"groupBy", iterator: 1},{"name":"countBy", iterator: 1},{"name":"shuffle"},{"name":"toArray"},{"name":"size"}];
 
     var polyfillArr = [{"name":"first"},{"name":"initial"},{"name":"last"},{"name":"rest"},{"name":"compact"},
-        {"name":"flatten"},{"name":"without"},{"name":"union"},{"name":"intersection"},{"name":"difference"},
+        {"name":"flatten"},{"name":"without"},{"name":"union"},{"name":"intersection"},
         {"name":"uniq", iterator: 2},{"name":"zip"},{"name":"object"},{"name":"indexOf"},{"name":"lastIndexOf"},{"name":"sortedIndex", iterator:2},{"name":"range"}];
 
     var polyfillObj = [{"name":"keys"},{"name":"values"},{"name":"pairs"},{"name":"invert"},{"name":"functions"},
@@ -205,7 +210,7 @@ var FA, FO;
         {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
     var alexLibObj = [{"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
-    var alexLibArr = [ {name: "toTrueArray"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}];
+    var alexLibArr = [ {name: "toTrueArray"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
 
     if (!compatibility_mode)
         alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work

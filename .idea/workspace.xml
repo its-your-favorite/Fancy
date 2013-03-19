@@ -3,14 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy.js" afterPath="$PROJECT_DIR$/fancy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functional.js" afterPath="$PROJECT_DIR$/functional.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Fancy.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363586512752" ignored="false" />
-    <file path="/fancy.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363587126761" ignored="false" />
+    <file path="/fancy.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363662884902" ignored="false" />
     <file path="/functional.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363587666659" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +32,7 @@
       <file leaf-file-name="fancy.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fancy.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="47" selection-start="402" selection-end="402" vertical-scroll-proportion="0.3222749">
+            <state line="84" column="48" selection-start="2544" selection-end="2544" vertical-scroll-proportion="0.4028436">
               <folding />
             </state>
           </provider>
@@ -52,7 +50,7 @@
       <file leaf-file-name="underscore-min.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/underscore-min.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="780" column="31" selection-start="29563" selection-end="29575" vertical-scroll-proportion="0.0">
+            <state line="409" column="27" selection-start="16174" selection-end="16174" vertical-scroll-proportion="-20.16">
               <folding />
             </state>
           </provider>
@@ -285,13 +283,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/underscore-min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="780" column="31" selection-start="29563" selection-end="29575" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cards.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="56" column="3" selection-start="1810" selection-end="2196" vertical-scroll-proportion="0.026356589">
@@ -306,9 +297,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/underscore-min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="409" column="27" selection-start="16174" selection-end="16174" vertical-scroll-proportion="-20.16">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fancy.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="47" selection-start="402" selection-end="402" vertical-scroll-proportion="0.3222749">
+        <state line="84" column="48" selection-start="2544" selection-end="2544" vertical-scroll-proportion="0.4028436">
           <folding />
         </state>
       </provider>
