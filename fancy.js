@@ -25,12 +25,14 @@ var FancyObject, FancyArray;
 var FA, FO;
 
 (function() {
+    /*
     var profileAlot = function(cb){
         var x = new Date().getTime();
         for (var y=0; y < 10000; y++)
             cb();
         return (new Date().getTime() - x)/ 1000;
     }
+    /**/
 
     var compatibility_mode = false; //uses native arrays, to enable things like [1,2,3].concat(FA([1,4,5])). Discouraged, because it introduces an inconsistency with IE.
     var compatibility_mode_for_ie = compatibility_mode && false; //Discouraged, because it disallows writing over native prototype functions
@@ -243,6 +245,8 @@ var FA, FO;
 
     function fillInWith(target, polyfill, otherLibrary) {
         var x;
+        var stringToFunction = _.memoize(Functional.lambda);
+
         for (x in polyfill) {
             if (polyfill.hasOwnProperty(x)) {
                 var func = polyfill[x];
@@ -254,7 +258,7 @@ var FA, FO;
                         var result;
                         var replacer = funcSig.hasOwnProperty('iterator') && (funcSig.iterator-1);
                         if ((replacer !== false) && (typeof Functional != "undefined") && arguments.hasOwnProperty(replacer) && (typeof arguments[replacer] == "string") ){
-                            params[replacer+1] = Functional.lambda(arguments[replacer]);
+                            params[replacer+1] = stringToFunction(arguments[replacer]);
                         }
                         if (!arguments.length && funcSig.assumeIdentity)
                             params.push(_.identity);
