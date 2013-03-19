@@ -12,8 +12,8 @@
  * Clarify that I knee-capped osteele's library
  *
  * //my added functions:
-// Obj: mapObj, filterObj, selectObj, rejectObj, meld
-// Array: sameContents, hasAll, chunk
+ // Obj: mapObj, filterObj, selectObj, rejectObj, meld
+ // Array: sameContents, hasAll, chunk
  * makeArray
  *
  * @param input
@@ -26,13 +26,13 @@ var FA, FO;
 
 (function() {
     /*
-    var profileAlot = function(cb){
-        var x = new Date().getTime();
-        for (var y=0; y < 10000; y++)
-            cb();
-        return (new Date().getTime() - x)/ 1000;
-    }
-    /**/
+     var profileAlot = function(cb){
+     var x = new Date().getTime();
+     for (var y=0; y < 10000; y++)
+     cb();
+     return (new Date().getTime() - x)/ 1000;
+     }
+     /**/
 
     var compatibility_mode = false; //uses native arrays, to enable things like [1,2,3].concat(FA([1,4,5])). Discouraged, because it introduces an inconsistency with IE.
     var compatibility_mode_for_ie = compatibility_mode && false; //Discouraged, because it disallows writing over native prototype functions
@@ -51,7 +51,7 @@ var FA, FO;
     FancyObject.prototype = new Object;
 
     FancyObject.object = function(keys, vals) {
-       return FO(_.object(keys,vals));
+        return FO(_.object(keys,vals));
     }
     /**
      * Shallow
@@ -90,28 +90,30 @@ var FA, FO;
     };
 
     AlexLibrary.difference = function(arrayEsque) {
-            var rest = FancyArray.prototype.concat.apply(FA(), Array.prototype.slice.call(arguments, 1));
-            return _.filter(arrayEsque, function(value){ return !_.contains(rest, value); });
+        var rest = FancyArray.prototype.concat.apply(FA(), Array.prototype.slice.call(arguments, 1));
+        return _.filter(arrayEsque, function(value){ return !_.contains(rest, value); });
     }
 
-
     /**
-     * In linear time. Takes an array not string*
-     * @param obj
-     * @param toRemove
-     * @returns {*}
+     * A cool code re-use pattern if I do say-so myself
      */
-    AlexLibrary.pickFancy = function(obj, toRemove) {
-        var objToRemove = _.object(toRemove, toRemove);
-        var copy = obj.filterObj(function(val, key) { return objToRemove.hasOwnProperty(key); });
-        return copy;
-    };
+    var ref = function(reverse) {
+        return function(obj, toRemove) {
+            var objToRemove = {}; //build lookup table
+            FA(arguments).slice(1).map( function(obj){
+                    FA(obj).map(function(val,key) {
+                        objToRemove[val] = true;
+                    });
+                }
+            );
+            var copy = obj.rejectObj(function(val, key) { return reverse ^ objToRemove.hasOwnProperty(key); });
+            return copy;
+        };
+    }
 
-    AlexLibrary.omitFancy = function(obj, toRemove) {
-        var objToRemove = _.object(toRemove, toRemove);
-        var copy = obj.rejectObj(function(val, key) { return objToRemove.hasOwnProperty(key); });
-        return copy;
-    };
+    AlexLibrary.omit = ref(false);
+    AlexLibrary.pick = ref(true);
+
     /**
      * Compares two arrays, but doesn't care about order, types, or nested-ness
      * @param arrMe
@@ -164,13 +166,18 @@ var FA, FO;
 // Breaks an array into sub arrays of length = size
 //this is begging to be rewritten as a right apply on divide composed with parseInt passed to _.groupBy
     AlexLibrary.chunk = function(me, size) {
-            var tmp = [], x;
-            for (x=0; x < me.length; x++) {
-                tmp[parseInt(x/size)] = tmp[parseInt(x/size)] || FA();
-                tmp[parseInt(x/size)].push(me[x]);
-            }
-            return tmp;
+        var tmp = [], x;
+        for (x=0; x < me.length; x++) {
+            tmp[parseInt(x/size)] = tmp[parseInt(x/size)] || FA();
+            tmp[parseInt(x/size)].push(me[x]);
+        }
+        return tmp;
     };
+
+    AlexLibrary.slice = function(me) {
+        var extraArgs = Array.prototype.slice.call(arguments, 1);
+        return Array.prototype.slice.apply(me, extraArgs);
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -204,13 +211,15 @@ var FA, FO;
         return this;
     };
     FancyArray.prototype = new Array; //should go right here.
-    
+
     FA.prototype.toJSON = function() { return (this.toTrueArray()); };
     /**
      * Since we can't directly assign to this
      * @param arr
      */
     FancyArray.prototype.setThisTo = function(arr, thiss) {
+        if (typeof arr === "string")
+            arr = [arr];
         var args = [0, this.length].concat(FancyArray.makeArray(arr));
         this.splice.apply(this, args );
         return this;
@@ -232,12 +241,12 @@ var FA, FO;
 
     var polyfillObj = [{"name":"keys"},{"name":"values"},{"name":"pairs"},{"name":"invert"},{"name":"functions"},
         {"name":"extend"},{"name":"pick"},{"name":"omit"},{"name":"defaults"},{"name":"clone"},{"name":"tap"},{"name":"has"},
-            {"name":"isEqual"},{"name":"isEmpty"},{"name":"isElement"},{"name":"isArray"},{"name":"isObject"},{"name":"isArguments"},
-            {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
+        {"name":"isEqual"},{"name":"isEmpty"},{"name":"isElement"},{"name":"isArray"},{"name":"isObject"},{"name":"isArguments"},
+        {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
         {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
-    var alexLibObj = [{"name": "pickFancy"}, {"name": "omitFancy"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
-    var alexLibArr = [ {name: "toTrueArray"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
+    var alexLibObj = [{"name": "pick"}, {"name": "omit"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
+    var alexLibArr = [ {name: "toTrueArray"}, {name: "slice"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
 
     if (!compatibility_mode)
         alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work
