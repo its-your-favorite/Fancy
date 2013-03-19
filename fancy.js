@@ -87,6 +87,25 @@ var FA, FO;
             var rest = FancyArray.prototype.concat.apply(FA(), Array.prototype.slice.call(arguments, 1));
             return _.filter(arrayEsque, function(value){ return !_.contains(rest, value); });
     }
+
+
+    /**
+     * In linear time. Takes an array not string*
+     * @param obj
+     * @param toRemove
+     * @returns {*}
+     */
+    AlexLibrary.pickFancy = function(obj, toRemove) {
+        var objToRemove = _.object(toRemove, toRemove);
+        var copy = obj.filterObj(function(val, key) { return objToRemove.hasOwnProperty(key); });
+        return copy;
+    };
+
+    AlexLibrary.omitFancy = function(obj, toRemove) {
+        var objToRemove = _.object(toRemove, toRemove);
+        var copy = obj.rejectObj(function(val, key) { return objToRemove.hasOwnProperty(key); });
+        return copy;
+    };
     /**
      * Compares two arrays, but doesn't care about order, types, or nested-ness
      * @param arrMe
@@ -210,7 +229,7 @@ var FA, FO;
         {"name":"isFunction"},{"name":"isString"},{"name":"isNumber"},{"name":"isFinite"},{"name":"isBoolean"},{"name":"isDate"},
         {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
-    var alexLibObj = [{"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
+    var alexLibObj = [{"name": "pickFancy"}, {"name": "omitFancy"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
     var alexLibArr = [ {name: "toTrueArray"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
 
     if (!compatibility_mode)

@@ -7,7 +7,7 @@
     <ignored path="Fancy.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363586512752" ignored="false" />
-    <file path="/fancy.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363662884902" ignored="false" />
+    <file path="/fancy.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363663052094" ignored="false" />
     <file path="/functional.js" changelist="3563aec4-e62b-43ed-9a1f-5eeaa4ae5206" time="1363587666659" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +31,7 @@
       <file leaf-file-name="fancy.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fancy.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="79" column="0" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.51026857">
+            <state line="231" column="68" selection-start="9144" selection-end="9144" vertical-scroll-proportion="0.40916273">
               <folding />
             </state>
           </provider>
@@ -305,7 +305,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fancy.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="0" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.51026857">
+        <state line="231" column="68" selection-start="9144" selection-end="9144" vertical-scroll-proportion="0.40916273">
           <folding />
         </state>
       </provider>
