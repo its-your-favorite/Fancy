@@ -58,4 +58,6 @@ So please checkout underscore documentation and http://osteele.com/sources/javas
    * filterObj
    * selectObj
    * rejectObj
+   * pickFancy
+   * omitFancy
    
