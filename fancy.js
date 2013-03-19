@@ -9,7 +9,15 @@
  * - variable notation
  * - arrow notation
  *
- * Clarify that I knee-capped osteele's library
+ * Clarify that I have altered osteele's library, specifically I have not called install, replaced _ with underscore.js, and
+ *   prevented it from altering function.prototype
+ *
+ * Discuss performance briefly
+ * --
+ * Time the library for include time (after minifaction). if slow >.05 ms, then try a build solution
+ * In a fashion where this library can build itself.
+ *
+ *
  *
  * //my added functions:
 // Obj: mapObj, filterObj, selectObj, rejectObj, meld
@@ -144,19 +152,26 @@ var FA, FO;
      * @param targetObj
      * @param reducer
      */
-    AlexLibrary.meld = function(me, targetObjs, reducer) {
-        var result = new FancyObject({});
+    AlexLibrary.meld = function(me, targetObjs, reducer, filteringUnsets) {
 
+        var result = new FancyObject({});
         if (!(targetObjs instanceof Array))
             targetObjs = [targetObjs];
 
-        FA(targetObjs).map(function(targetObj) {
-            me.keys().union(FO(targetObj).keys()).map(function(keyName){
-                if (me.hasOwnProperty(keyName) && targetObj.hasOwnProperty(keyName))
-                    result[keyName] = reducer(me[keyName], targetObj[keyName]);
-                else if (! result.hasOwnProperty(keyName))
-                    result[keyName] = me[keyName] || targetObj[keyName];
-            });
+        var allObjects = FancyArray(targetObjs);
+        allObjects = allObjects.map(function(obj) { return FO(obj);});
+        allObjects.push(me);
+
+        var allKeys =FA.prototype.concat.apply(FA([]), allObjects.invoke("keys")).uniq();
+
+        allKeys.map(function(key) {
+            var resultArray = allObjects.pluck(key);
+            if (filteringUnsets === true)
+                resultArray=resultArray.filter(function(a) { return (typeof a !== "undefined");});
+            else if (!filteringUnsets)
+                resultArray = resultArray.map(function(a) { if (typeof a === "undefined") return 0; return a;});
+
+            result[key] = resultArray.reduce(reducer);
         });
         return result;
     };
@@ -204,7 +219,7 @@ var FA, FO;
         return this;
     };
     FancyArray.prototype = new Array; //should go right here.
-    
+
     FA.prototype.toJSON = function() { return (this.toTrueArray()); };
     /**
      * Since we can't directly assign to this
