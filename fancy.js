@@ -89,9 +89,22 @@ var FA, FO;
         return Array.prototype.constructor.apply(new Array, arrayEsque);
     };
 
+    var getMerged = function() { //private, internal use only
+        var result = {}; //build lookup table
+        FA(arguments[0]).slice(1).map( function(obj){
+                if (! (obj instanceof Array))
+                    obj = [obj];
+                FA(obj).map(function(val,key) {
+                    result[val] = true;
+                });
+            }
+        );
+        return result;
+    };
+
     AlexLibrary.difference = function(arrayEsque) {
-        var rest = FancyArray.prototype.concat.apply(FA(), Array.prototype.slice.call(arguments, 1));
-        return _.filter(arrayEsque, function(value){ return !_.contains(rest, value); });
+        var toRemove = getMerged(arguments);
+        return _.filter(arrayEsque, function(val, key){ return !toRemove.hasOwnProperty(val); });
     }
 
     /**
@@ -99,13 +112,7 @@ var FA, FO;
      */
     var ref = function(reverse) {
         return function(obj, toRemove) {
-            var objToRemove = {}; //build lookup table
-            FA(arguments).slice(1).map( function(obj){
-                    FA(obj).map(function(val,key) {
-                        objToRemove[val] = true;
-                    });
-                }
-            );
+            var objToRemove = getMerged(arguments);
             var copy = obj.rejectObj(function(val, key) { return reverse ^ objToRemove.hasOwnProperty(key); });
             return copy;
         };
@@ -221,7 +228,7 @@ var FA, FO;
         if (typeof arr === "string")
             arr = [arr];
         var args = [0, this.length].concat(FancyArray.makeArray(arr));
-        this.splice.apply(this, args );
+        Array.prototype.splice.apply(this, args );
         return this;
     };
 
@@ -250,7 +257,7 @@ var FA, FO;
 
     if (!compatibility_mode)
         alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work
-    // @todo I suspect this may be necessary for difference, pick, and omit tooo.
+    // @todo I suspect this may be necessary for difference
 
     var x, polyfill = polyfillColl.concat(polyfillArr);
 
