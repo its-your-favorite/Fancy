@@ -70,6 +70,7 @@ var FA, FO;
         return this;
     };
 
+
     var AlexLibrary = {};
     AlexLibrary.filterObj = AlexLibrary.selectObj = function(obj, callback) {
         return obj.pairs().filter(function(a) { return callback(a[1], a[0]); }).object();
@@ -203,7 +204,8 @@ var FA, FO;
         return this;
     };
     FancyArray.prototype = new Array; //should go right here.
-
+    
+    FA.prototype.toJSON = function() { return (this.toTrueArray()); };
     /**
      * Since we can't directly assign to this
      * @param arr
@@ -265,6 +267,9 @@ var FA, FO;
 
                         result = otherLibrary[funcSig.name].apply(otherLibrary, params);
 
+                        if (funcSig.name == "toTrueArray") {
+                            return result;
+                        }
                         if (result.constructor.toString().indexOf(" Array()")>=0 ) //returned an array
                             return new FancyArray(result);
                         if (result.constructor.toString().indexOf(" Object()")>=0 ) //returned an object
