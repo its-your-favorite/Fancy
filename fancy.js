@@ -67,16 +67,17 @@ var FA, FO;
 
     var AlexLibrary = {};
     AlexLibrary.filterObj = AlexLibrary.selectObj = function(obj, callback) {
-        return obj.pairs().filter(function(a) { return callback(a[1]); }).object();
+        return obj.pairs().filter(function(a) { return callback(a[1], a[0]); }).object();
     };
 
     AlexLibrary.rejectObj = function(obj, callback) {
-        return obj.pairs().reject(function(a) { return callback(a[1]); }).object();
+        return obj.pairs().reject(function(a) { return callback(a[1], a[0]); }).object();
     };
 
     AlexLibrary.mapObj = function(obj, callback) {
-        return  obj.pairs().map(function(pair) { return [pair[0], callback(pair[1])];}).object();
+        return  obj.pairs().map(function(pair) { return [pair[0], callback(pair[1], pair[0])];}).object();
     };
+
 
     AlexLibrary.toTrueArray = function(arrayEsque) {
         return Array.prototype.constructor.apply(new Array, arrayEsque);
