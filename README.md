@@ -36,7 +36,7 @@ Also, there are FancyObjects, which are the same thing, but used on javascript o
 - sampleFancyObject.keys(); // ['a', 'b', 'c']
 
 FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray()
-So please checkout https://github.com/documentcloud/underscore/ and https://github.com/anfurny/Fancy/wiki/Sample-Use .
+So please checkout https://github.com/documentcloud/underscore/ and https://github.com/osteele/functional-javascript.
 
 ###Don't ask me:
  * How's this different than using underscore and functional js?
