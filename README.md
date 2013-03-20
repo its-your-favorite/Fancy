@@ -35,8 +35,10 @@ Also, there are FancyObjects, which are the same thing, but used on javascript o
 - var sampleFancyObject = new FancyObject({a: 1, b:3, c: 2});
 - sampleFancyObject.keys(); // ['a', 'b', 'c']
 
-FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray()
-So please checkout underscore documentation and http://osteele.com/sources/javascript/functional/ .
+You can chain between FancyArrays and Objects
+- sampleFancyObject.keys().invoke("toUpperCase").countBy().values(); // [1, 1, 1]
+
+FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray() . Also please checkout https://github.com/documentcloud/underscore/ and https://github.com/osteele/functional-javascript.
 
 ###Don't ask me:
  * How's this different than using underscore and functional js?
@@ -47,6 +49,9 @@ So please checkout underscore documentation and http://osteele.com/sources/javas
   * Also, a few functions are added like filterObj
  * Was that a dragon ball z reference?
   * Yes 
+ * What underscore functions do you provide? 
+  * Every underscore function that is under the Array or Collection section is in a FancyArray
+  * Every underscore function that is under the Object or Collection section is in a FancyObject
  * Wait, what functions did you add fancyArray, besides what is in underscore?
    * toTrueArray
    * hasAll
