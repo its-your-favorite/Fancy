@@ -62,7 +62,4 @@ FancyArrays are extensions of arrays and thus should usually be interchangeable 
    * mapObj
    * filterObj
    * selectObj
-   * rejectObj
-   * pickFancy
-   * omitFancy
-   
+   * rejectObj   
