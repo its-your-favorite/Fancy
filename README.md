@@ -20,6 +20,8 @@ See if two words are anagrams in linear time:
 Remove odd numbers from a list:
 - .reject("%2")
 
+More examples: https://github.com/anfurny/Fancy/wiki/Sample-Use
+
 ### So how do I use it
 
 So simply create a fancy array from any array 
@@ -45,8 +47,8 @@ FancyArrays are extensions of arrays and thus should usually be interchangeable 
   * more concisce
  * How's that?
   * The one-off object it returns functions as an array for almost all uses.
-  * By integrating the two libraries, it's basically like Gotenks
-  * Also, a few functions are added like filterObj
+  * By merging the two libraries, it's like when two super saiyins merge: super freakin' powerful.
+  * Also, a few functions are added
  * Was that a dragon ball z reference?
   * Yes 
  * What underscore functions do you provide? 
