@@ -1,5 +1,6 @@
 
 /**
+ * Copyright 2013 Alex Rohde
  * todo - improve tutorial (add: also improved the way mapping on objects works, and filtering)
  *  document meld & others
  *
