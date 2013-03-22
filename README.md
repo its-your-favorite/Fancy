@@ -9,7 +9,7 @@ Basically, it helps you do functional stuff better than either library on its ow
 
 Need to break arrays into chunks of 2? (Turn [1, 3, 2, 2, 4, 8] into [[1, 3], [2, 2], [4, 8]] )
 - .chunk(2)
-- .groupBy('v,i->0|i/2')
+- .groupBy('v,i -> 0 | i/2') //fancy bitwise or used as int-cast. 
 
 Need to sort pairs by the second value? ( Turn [['dave', 3], ['suzy', 5], ['jones', 1]] into [['jones', 1], ['dave', 3], ['suzy' 5]]
 - .sortBy("x[1]")
@@ -40,7 +40,11 @@ Also, there are FancyObjects, which are the same thing, but used on javascript o
 You can chain between FancyArrays and Objects
 - sampleFancyObject.keys().invoke("toUpperCase").countBy().values(); // [1, 1, 1]
 
-FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray() . Also please checkout https://github.com/documentcloud/underscore/ and https://github.com/osteele/functional-javascript.
+- If you stop wanting to type "FancyArray" it's aliased as FA. "FancyObject" is aliased as FO.
+
+FancyArrays are extensions of arrays and thus should usually be interchangeable with arrays. The cases when they aren't (json serialization, .concat) you can convert back to an array with .toTrueArray() .
+
+Also please checkout https://github.com/documentcloud/underscore/ and https://github.com/osteele/functional-javascript.
 
 ###Don't ask me:
  * How's this different than using underscore and functional js?
