@@ -30,10 +30,11 @@
  * @constructor
  */
 "use strict";
-var FancyObject, FancyArray;
-var FA, FO;
+var FancyObject, FancyArray, FancyFunction;
+var FO, FA, FF;
 
 (function() {
+    var stringToFunction = _.memoize(Functional.lambda);
     /*
      var profileAlot = function(cb){
      var x = new Date().getTime();
@@ -50,7 +51,17 @@ var FA, FO;
         throw "This Library Requires Underscore.js";
     }
 // todo oliver steele's library also defines underscore. I should use a different technique here...
+    FancyFunction = FF = function(input){
+        if (! (this instanceof FF))
+            return new FF( input);
 
+        if (typeof input == "string")
+            input = stringToFunction(input);
+        this.function = input;
+        this.f = this.function;
+    };
+
+    //FF.prototype = exportedPrototype;
 
     FancyObject = FO = function(input) {
         if (! (this instanceof FancyObject))
@@ -93,6 +104,12 @@ var FA, FO;
         return  obj.pairs().map(function(pair) { return [pair[0], callback(pair[1], pair[0])];}).object();
     };
 
+    AlexLibrary.apply = function(obj, /* array */ vals, scope) {
+        return obj.map(function(x) {
+            if (typeof(x) == "string")
+                x = stringToFunction(x);
+            return x.apply(scope, vals); });
+    };
 
     AlexLibrary.toTrueArray = function(arrayEsque) {
         return Array.prototype.constructor.apply(new Array, arrayEsque);
@@ -269,8 +286,9 @@ var FA, FO;
         {"name":"isRegExp"},{"name":"isNaN"},{"name":"isNull"},{"name":"isUndefined"}];
 
     var alexLibObj = [{"name": "pick"}, {"name": "omit"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
-    var alexLibArr = [ {name: "toTrueArray"}, {name: "slice"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
+    var alexLibArr = [ {name: "toTrueArray"}, {name:'apply', iterator: 1}, {name: "slice"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
 
+    var osFuncs = [ {name: "guard"}];
     if (!compatibility_mode)
         alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work
     // @todo I suspect this may be necessary for difference
@@ -279,9 +297,7 @@ var FA, FO;
 
     function fillInWith(target, polyfill, otherLibrary) {
         var x;
-        var stringToFunction = _.memoize(Functional.lambda);
-
-        for (x in polyfill) {
+       for (x in polyfill) {
             if (polyfill.hasOwnProperty(x)) {
                 var func = polyfill[x];
                 //if (! target.prototype[func.name])
@@ -312,6 +328,18 @@ var FA, FO;
             }
         }
     }
+
+    function fillIn2(target, list, source ) {
+        var x;
+        for (x in list)
+            if (list.hasOwnProperty(x)) {
+                target.prototype[list[x].name] = function() {
+                    return FF(source[list[x].name].apply(this.f,arguments));
+                };
+            }
+    };
+
+    fillIn2(FancyFunction, osFuncs, exportedPrototype);
     fillInWith(FancyArray, polyfill, _);
     fillInWith(FancyObject, polyfillColl.concat(polyfillObj), _);
     fillInWith(FancyObject, alexLibObj, AlexLibrary);
