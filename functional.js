@@ -65,13 +65,16 @@ Functional[name]=Functional[name]||(function(name){var fn=methods[name];return f
 Functional.__initalFunctionState=Functional._startRecordingMethodChanges(exportedPrototype);exportedPrototype.bind=function(object){var fn=this;var args=Array.slice(arguments,1);return function(){return fn.apply(object,args.concat(Array.slice(arguments,0)));}}
 exportedPrototype.saturate=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args);}}
 exportedPrototype.aritize=function(n){var fn=this;return function(){return fn.apply(this,Array.slice(arguments,0,n));}}
-exportedPrototype.curry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,args.concat(Array.slice(arguments,0)));};}
+exportedPrototype.curry=function(){
+    var fn=this;var args=Array.slice(arguments,0);
+    return function(){return fn.apply(this,args.concat(Array.slice(arguments,0)));
+    };}
 exportedPrototype.rcurry=function(){var fn=this;var args=Array.slice(arguments,0);return function(){return fn.apply(this,Array.slice(arguments,0).concat(args));};}
 exportedPrototype.ncurry=function(n){var fn=this;var largs=Array.slice(arguments,1);return function(){var args=largs.concat(Array.slice(arguments,0));if(args.length<n){args.unshift(n);return fn.ncurry.apply(fn,args);}
 return fn.apply(this,args);};}
 exportedPrototype.rncurry=function(n){var fn=this;var rargs=Array.slice(arguments,1);return function(){var args=Array.slice(arguments,0).concat(rargs);if(args.length<n){args.unshift(n);return fn.rncurry.apply(fn,args);}
 return fn.apply(this,args);};}
-_=Function._={};exportedPrototype.partial=function(){var fn=this;var _=Function._;var args=Array.slice(arguments,0);var subpos=[],value;for(var i=0;i<arguments.length;i++)
+_=__=Function._={};exportedPrototype.partial=function(){var fn=this;var _=Function._;var args=Array.slice(arguments,0);var subpos=[],value;for(var i=0;i<arguments.length;i++)
 arguments[i]==_&&subpos.push(i);return function(){var specialized=args.concat(Array.slice(arguments,subpos.length));for(var i=0;i<Math.min(subpos.length,arguments.length);i++)
 specialized[subpos[i]]=arguments[i];for(var i=0;i<specialized.length;i++)
 if(specialized[i]==_)

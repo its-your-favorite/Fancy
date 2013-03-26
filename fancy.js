@@ -288,7 +288,7 @@ var FO, FA, FF;
     var alexLibObj = [{"name": "pick"}, {"name": "omit"}, {"name": "mapObj", iterator: 1}, {"name": "filterObj", iterator: 1}, {name: "selectObj", iterator: 1}, {name: "rejectObj", iterator: 1}, {name: "meld", iterator: 2}];
     var alexLibArr = [ {name: "toTrueArray"}, {name:'apply', iterator: 1}, {name: "slice"}, {name: "sameContents"}, {name: "hasAll"}, {name: "chunk"}, {name: "difference"}];
 
-    var osFuncs = [ {name: "guard"}];
+    var osFuncs = [{name: "aritize"}, {name: "bind"}, {name: "compose"}, {name: "curry"}, {name: "flip"}, {name: "guard"}, {name: "ncurry"}, {name: "partial"}, {name: "prefilterAt"}, {name: "prefilterObject"}, {name: "prefilterSlice"}, {name: "rcurry"}, {name: "rncurry"}, {name: "saturate"}, {name: "sequence"}, {name: "toFunction"}, {name: "traced"}, {name: "uncurry"}];
     if (!compatibility_mode)
         alexLibArr.push({name: "concat"}, {name: "union"}); //without compatibility mode, the native version doesn't work
     // @todo I suspect this may be necessary for difference
@@ -333,9 +333,11 @@ var FO, FA, FF;
         var x;
         for (x in list)
             if (list.hasOwnProperty(x)) {
-                target.prototype[list[x].name] = function() {
-                    return FF(source[list[x].name].apply(this.f,arguments));
-                };
+                target.prototype[list[x].name] = (function(x) {
+                    return function() {
+                        return FF(source[list[x].name].apply(this.f,arguments));
+                    };
+                })(x);
             }
     };
 

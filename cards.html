@@ -46,7 +46,9 @@ var hand = // ["5S", "6S", "5H", "6H", "5D"];
      ["5S", "6S", "5H", "6H", "5D"], //full house H756
     ['10s', 'Js', 'Qs', 'Ks', '2s'], //flush cbaA2
     ['10s', 'Js', 'Qs', 'Ks', 'As'], //straight flush
+     ["7S", "4C", "4H", "4D", "7C"], //full house 47
     ["9S", "9H", "4H", "4D", "4C"], //full house 49
+     ["4S", "8H", "8H", "4D", "4C"], //full house 48
     ['2s', '3C', '5s', '4s', 'As'], //straight low ace
     ['10s', 'JC', 'Qs', 'Ks', 'As'], //straight high ace
      ['9s','8h','10d','AC', '2C'], //high card - zA982
@@ -112,7 +114,7 @@ var cardValuesAlpha = function(card) {
   */
 var cardValuesNumeric = function(aceHigh, card) {
   card = cardValues(card);
-  if (parseInt(card)) {
+  if (parseInt(card)) {//if numeric, then we're done
       return parseInt(card);
   }
   var lookup = {"A": 1 + 13*(!!aceHigh), "J": 11, "Q": 12, "K": 13};
@@ -136,9 +138,9 @@ var areConsecutive = function(numbers) {
  * @return {String}
  */
 var evaluateHand = function(cardSet) {
-    var f = _.partial(followsPattern, cardSet);
+    var f = FancyFunction(followsPattern).partial(cardSet, __, cardValuesAlpha).f;
 
-    var isFlush = f([5], cardSuits);
+    var isFlush = followsPattern(cardSet, [5], cardSuits);
     var isStraight = (function(cards) {
         //Ace as a 1 straight
         var way1 = cardValuesAlpha(areConsecutive(_.map(cards, _.partial(cardValuesNumeric, false))) + 'c');
@@ -153,14 +155,15 @@ var evaluateHand = function(cardSet) {
 
     var possibleHands = FA(
             [   ["Straight Flush",      isStraightFlush], // SF
-                ["Four of a Kind",      f([4,1], cardValuesAlpha)], // quads
-                ["Full House",          f([3,2], cardValuesAlpha)], //fullHouse
+                ["Four of a Kind",      f([4,1])], // quads
+                ["Full House",          f([3,2])], //fullHouse
                 ["Flush",               isFlush && cardRanks], // flush
                 ["Straight",            isStraight], // straight
-                ["Three of a Kind",     f([3,1,1], cardValuesAlpha)], //trips
-                ["Two Pair",            f([2,2,1], cardValuesAlpha)], //two pair
-                ["One Pair",            f([2,1,1,1], cardValuesAlpha)], //pair
-                ["High Card",           f([1,1,1,1,1], cardValuesAlpha)]]); //high card
+                ["Three of a Kind",     f([3,1,1])], //trips
+                ["Two Pair",            f([2,2,1])], //two pair
+                ["One Pair",            f([2,1,1,1])], //pair
+                ["High Card",           f([1,1,1,1,1])] //high card
+            ]);
 
     var allMatchedHands = possibleHands.map( function(hand, i) {
         return hand[1] && [hand[0], "Hand" + (9-i) + "-" + hand[1]];
@@ -182,10 +185,9 @@ var followsPattern = function(hand, expected, callback) {
         return false; //This hand is NOT of the expected type, no match
     }
     var sets = groups.pairs();
-    sets = sets.sort(function(a, b ) { //sort by property 1 (count), then property 0 (face value) in case of tie
-            return (a[1] < b[1]) || ((a[1] == b[1]) && (a[0] < b[0]));
-    });
-    return sets.pluck(0).join("");
+    sets = sets.sortBy('x[1] + "" + x[0]');
+     //once again, take advantage of alphabetical sort, sort by cardCount, then card Value alpha in a tie
+    return sets.pluck(0).join("");//pluck the first item, the cardValueAlpha
 };
 
  var comparedCases = sampleCases.map(evaluateHand).sortBy("x[1]").reverse();
