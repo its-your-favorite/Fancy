@@ -51,7 +51,7 @@ Also please checkout https://github.com/documentcloud/underscore/ and https://gi
   * more concisce
  * How's that?
   * The one-off object it returns functions as an array for almost all uses.
-  * By merging the two libraries, it's like when two super saiyins merge: super freakin' powerful.
+  * By merging the two libraries, it's like when two super saiyans fuse together with the fusion dance: super freakin' powerful.
   * Also, a few functions are added
  * Was that a dragon ball z reference?
   * Yes 
