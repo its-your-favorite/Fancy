@@ -112,7 +112,7 @@ var FO, FA, FF;
     };
 
     AlexLibrary.toTrueArray = function(arrayEsque) {
-        return Array.prototype.constructor.apply(new Array, arrayEsque);
+        return Array.prototype.slice.apply(arrayEsque, null, [0, arrayEsque.length]);
     };
 
     var getMerged = function() { //private, internal use only
